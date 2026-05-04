@@ -1,0 +1,65 @@
+# Google Cloud IAM - Linux Permissions Live Demo
+# Platform: Google Cloud Shell
+
+# -----------------------------------------------
+# Step 1: Create intern user
+# -----------------------------------------------
+adduser intern
+
+# -----------------------------------------------
+# Step 2: Check intern user info
+# -----------------------------------------------
+id intern
+# Output: uid=1001(intern) gid=1001(intern) groups=1001(intern),100(users)
+
+# -----------------------------------------------
+# Step 3: Create secret file and secure it
+# -----------------------------------------------
+echo "top secret data" > /root/secret.txt
+chmod 600 /root/secret.txt
+# 600 = only root can read/write
+
+# -----------------------------------------------
+# Step 4: Switch to intern user
+# -----------------------------------------------
+su - intern
+
+# Try to read secret file as intern
+cat /root/secret.txt
+# Output: Permission denied (because chmod 600)
+
+exit
+
+# -----------------------------------------------
+# Step 5: Change file permissions (readable by others)
+# -----------------------------------------------
+chmod 644 /root/secret.txt
+# 644 = owner can read/write, others can only read
+
+# -----------------------------------------------
+# Step 6: Switch to intern and read file again
+# -----------------------------------------------
+su - intern
+cat /root/secret.txt
+# Output: top secret data
+
+exit
+
+# -----------------------------------------------
+# Step 7: Create developers group and add intern
+# -----------------------------------------------
+groupadd developers
+usermod -aG developers intern
+
+# -----------------------------------------------
+# Step 8: Verify intern's groups
+# -----------------------------------------------
+groups intern
+# Output: intern : intern users developers
+
+# -----------------------------------------------
+# Step 9: List files in root directory
+# -----------------------------------------------
+ls -l
+# -rwxr-xr-x 1 root root  913 README-cloudshell.txt
+# -rw-r--r-- 1 root root   16 secret.txt
