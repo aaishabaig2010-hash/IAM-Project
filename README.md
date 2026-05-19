@@ -16,3 +16,8 @@ Hands-on demo of Linux-based Identity and Access Management (IAM) concepts.
 
 ## File
 - `iam-demo-commands.txt` — all commands used in the live demo
+
+ ## Author
+Aaisha Baig
+EduQual Level 3 Diploma in Cloud Cyber Security
+Al Nafi International College
